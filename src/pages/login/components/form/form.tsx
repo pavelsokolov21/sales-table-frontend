@@ -1,5 +1,11 @@
 import { useFormik } from "formik";
 import { FC } from "react";
+import { Buttons } from "../../../../components/buttons";
+import { Inputs } from "../../../../components/inputs";
+import { withLabel } from "../../../../hocs/withLabel";
+
+const Login = withLabel(Inputs.Input, { label: "Login" });
+const Password = withLabel(Inputs.Input, { label: "Password" });
 
 export const Form: FC = () => {
   const formik = useFormik({
@@ -14,22 +20,20 @@ export const Form: FC = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <label>
-        <input
-          type="text"
-          name="login"
-          onChange={formik.handleChange}
-          value={formik.values.login}
-        />
-      </label>
-      <label>
-        <input
-          type="password"
-          name="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-        />
-      </label>
+      <Login
+        placeholder="Login"
+        name="login"
+        onChange={formik.handleChange}
+        value={formik.values.login}
+      />
+      <Password
+        placeholder="Password"
+        type="password"
+        name="password"
+        onChange={formik.handleChange}
+        value={formik.values.password}
+      />
+      <Buttons.Primary type="submit">Login</Buttons.Primary>
     </form>
   );
 };
