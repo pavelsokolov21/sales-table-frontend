@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import { FC } from "react";
+import { API } from "../../../../api/api";
 import { Buttons } from "../../../../components/buttons";
 import { Inputs } from "../../../../components/inputs";
 import { Option } from "../../../../components/inputs/select";
@@ -24,8 +25,16 @@ export const Form: FC = () => {
       paymentMode: PaymentOptions.TRANSFER_BANK,
       status: DeliveryStatuses.PROCESS,
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, actions) => {
+      try {
+        await API.post("products/create", values);
+        alert("Succeeded");
+        actions.resetForm();
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error(err);
+        }
+      }
     },
   });
   const paymentOptions: Option[] = [
@@ -47,7 +56,6 @@ export const Form: FC = () => {
       label: "Delivered",
       value: DeliveryStatuses.DELIVERED,
     },
-
     {
       label: "Canceled",
       value: DeliveryStatuses.CANCELED,
@@ -61,18 +69,21 @@ export const Form: FC = () => {
         value={formik.values.productName}
         onChange={formik.handleChange}
         placeholder="Name of your product"
+        isRequired
       />
       <ProductImage
         name="productImage"
         value={formik.values.productImage}
         onChange={formik.handleChange}
         placeholder="Image URL"
+        isRequired
       />
       <Customer
         name="customer"
         value={formik.values.customer}
         onChange={formik.handleChange}
         placeholder="Customer"
+        isRequired
       />
       <Amount
         type="number"
@@ -80,18 +91,21 @@ export const Form: FC = () => {
         value={formik.values.amount}
         onChange={formik.handleChange}
         placeholder="Amount"
+        isRequired
       />
       <PaymentMode
         name="paymentMode"
         value={formik.values.paymentMode}
         onChange={formik.handleChange}
         options={paymentOptions}
+        isRequired
       />
       <Status
         name="status"
         value={formik.values.status}
         onChange={formik.handleChange}
         options={statuses}
+        isRequired
       />
       <Buttons.Primary type="submit">Submit</Buttons.Primary>
     </form>

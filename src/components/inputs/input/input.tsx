@@ -5,6 +5,7 @@ interface Props {
   value: string | number;
   name: string;
   placeholder?: string;
+  isRequired?: boolean;
   onChange: (event: ChangeEvent<any>) => void;
 }
 
@@ -14,6 +15,7 @@ export const Input: FC<Props> = ({
   value,
   placeholder,
   name,
+  isRequired,
 }) => (
   <input
     name={name}
@@ -21,5 +23,6 @@ export const Input: FC<Props> = ({
     onChange={onChange}
     value={value}
     placeholder={placeholder}
+    required={isRequired}
   />
 );
